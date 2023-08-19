@@ -3,6 +3,7 @@
 #include <string.h>
 
 extern char **environ;
+char *token;
 
 char *_getenv(const char *name) {
     char **env = environ;
@@ -38,7 +39,7 @@ struct DirectoryNode *build_path_list() {
         }
         strcpy(path_copy, path_variable);
 
-        char *token = strtok(path_copy, ":");
+        token = strtok(path_copy, ":");
         while (token != NULL) {
             struct DirectoryNode *new_node = (struct DirectoryNode *)malloc(sizeof(struct DirectoryNode));
             if (!new_node) {
