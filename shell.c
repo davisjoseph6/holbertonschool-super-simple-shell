@@ -13,13 +13,15 @@ void execute_command(char *command) {
     if (pid == -1) {
         perror("fork");
     } else if (pid == 0) {
-        // Child process
-        char *args[] = {command, NULL};
+        /* Child process */
+        char *args[2];
+        args[0] = command;
+        args[1] = NULL;
         execve(command, args, NULL);
         perror("execve");
         _exit(1);
     } else {
-        // Parent process
+        /* Parent process */
         wait(NULL);
     }
 }
@@ -27,10 +29,11 @@ void execute_command(char *command) {
 int main() {
     char *input = NULL;
     size_t len = 0;
+    ssize_t read_len;
 
     while (1) {
         printf("#cisfun$ ");
-        ssize_t read_len = getline(&input, &len, stdin);
+        read_len = getline(&input, &len, stdin);
 
         if (read_len == -1) {
             if (feof(stdin)) {
@@ -43,7 +46,7 @@ int main() {
         }
 
         if (input[read_len - 1] == '\n') {
-            input[read_len - 1] = '\0'; // Remove the newline character
+            input[read_len - 1] = '\0'; /* Remove the newline character */
         }
 
         execute_command(input);
