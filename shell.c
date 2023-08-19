@@ -18,7 +18,7 @@ void execute_command(char *command) {
         args[0] = command;
         args[1] = NULL;
         execve(command, args, NULL);
-        perror("execve");
+        perror("./shell");
         _exit(1);
     } else {
         /* Parent process */
