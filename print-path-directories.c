@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 extern char **environ;
+char *token;
 
 char *_getenv(const char *name) {
     char **env = environ;
@@ -29,7 +30,7 @@ void print_path_directories() {
         }
         strcpy(path_copy, path_variable);
 
-        char *token = strtok(path_copy, ":");
+        token = strtok(path_copy, ":");
         while (token != NULL) {
             printf("%s\n", token);
             token = strtok(NULL, ":");
