@@ -9,12 +9,12 @@ char *_getenv(const char *name) {
 
     while (*env != NULL) {
         if (strncmp(name, *env, name_len) == 0 && (*env)[name_len] == '=') {
-            return &((*env)[name_len + 1]); // Return the value part
+            return &((*env)[name_len + 1]); /* Return the value part */
         }
         env++;
     }
 
-    return NULL; // Environment variable not found
+    return NULL; /* Environment variable not found */
 }
 
 int main() {
@@ -29,4 +29,3 @@ int main() {
 
     return 0;
 }
-
