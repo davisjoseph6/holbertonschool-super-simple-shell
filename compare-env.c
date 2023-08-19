@@ -2,14 +2,16 @@
 
 extern char **environ;
 
-int main(int argc, char *argv[], char *env[]) {
-    printf("Address of env (parameter): %p\n", (void *)env);
+int main(void) {
+    printf("Address of env (parameter): %p\n", (void *)environ);
     printf("Address of environ (global): %p\n", (void *)environ);
 
-    if (env == environ) {
-        printf("The addresses are the same.\n");
+    if (environ == NULL) {
+        printf("The environment variable is not available.\n");
+    } else if (environ[0] == NULL) {
+        printf("The environment variable is empty.\n");
     } else {
-        printf("The addresses are different.\n");
+        printf("The environment variable is not empty.\n");
     }
 
     return 0;
