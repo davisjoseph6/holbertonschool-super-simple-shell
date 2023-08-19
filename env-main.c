@@ -5,15 +5,17 @@
  *
  * Return: Always 0.
  */
-int main(int ac, char **av, char **env)
+int main(void)
 {
     unsigned int i;
+    extern char **environ;
 
     i = 0;
-    while (env[i] != NULL)
+    while (environ[i] != NULL)
     {
-        printf("%s\n", env[i]);
+        printf("%s\n", environ[i]);
         i++;
     }
-    return (0);
+    return 0;
 }
+
