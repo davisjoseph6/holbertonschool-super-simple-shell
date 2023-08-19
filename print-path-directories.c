@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 extern char **environ;
 
@@ -9,19 +10,23 @@ char *_getenv(const char *name) {
 
     while (*env != NULL) {
         if (strncmp(name, *env, name_len) == 0 && (*env)[name_len] == '=') {
-            return &((*env)[name_len + 1]); // Return the value part
+            return &((*env)[name_len + 1]);
         }
         env++;
     }
 
-    return NULL; // Environment variable not found
+    return NULL;
 }
 
 void print_path_directories() {
     const char *path_variable = _getenv("PATH");
 
     if (path_variable != NULL) {
-        char path_copy[strlen(path_variable) + 1];
+        char *path_copy = (char *)malloc(strlen(path_variable) + 1);
+        if (path_copy == NULL) {
+            perror("Memory allocation error");
+            return;
+        }
         strcpy(path_copy, path_variable);
 
         char *token = strtok(path_copy, ":");
@@ -29,6 +34,8 @@ void print_path_directories() {
             printf("%s\n", token);
             token = strtok(NULL, ":");
         }
+
+        free(path_copy);
     } else {
         printf("PATH environment variable not found\n");
     }
