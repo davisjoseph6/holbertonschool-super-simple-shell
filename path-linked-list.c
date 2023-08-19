@@ -10,12 +10,12 @@ char *_getenv(const char *name) {
 
     while (*env != NULL) {
         if (strncmp(name, *env, name_len) == 0 && (*env)[name_len] == '=') {
-            return &((*env)[name_len + 1]); // Return the value part
+            return &((*env)[name_len + 1]);
         }
         env++;
     }
 
-    return NULL; // Environment variable not found
+    return NULL;
 }
 
 struct DirectoryNode {
@@ -30,21 +30,43 @@ struct DirectoryNode *build_path_list() {
     const char *path_variable = _getenv("PATH");
 
     if (path_variable != NULL) {
-        char path_copy[strlen(path_variable) + 1];
+        size_t path_copy_len = strlen(path_variable) + 1;
+        char *path_copy = (char *)malloc(path_copy_len);
+        if (!path_copy) {
+            perror("Memory allocation error");
+            return NULL;
+        }
         strcpy(path_copy, path_variable);
 
         char *token = strtok(path_copy, ":");
         while (token != NULL) {
-            *tail = (struct DirectoryNode *)malloc(sizeof(struct DirectoryNode));
-            (*tail)->directory = strdup(token);
-            (*tail)->next = NULL;
+            struct DirectoryNode *new_node = (struct DirectoryNode *)malloc(sizeof(struct DirectoryNode));
+            if (!new_node) {
+                perror("Memory allocation error");
+                free(path_copy);
+                return NULL;
+            }
+            new_node->directory = strdup(token);
+            new_node->next = NULL;
 
+            *tail = new_node;
             tail = &((*tail)->next);
             token = strtok(NULL, ":");
         }
+
+        free(path_copy);
     }
 
     return head;
+}
+
+void free_path_list(struct DirectoryNode *list) {
+    while (list != NULL) {
+        struct DirectoryNode *temp = list;
+        list = list->next;
+        free(temp->directory);
+        free(temp);
+    }
 }
 
 int main() {
@@ -56,13 +78,7 @@ int main() {
         current = current->next;
     }
 
-    // Free memory
-    while (head != NULL) {
-        struct DirectoryNode *temp = head;
-        head = head->next;
-        free(temp->directory);
-        free(temp);
-    }
+    free_path_list(head);
 
     return 0;
 }
