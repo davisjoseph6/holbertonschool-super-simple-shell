@@ -10,11 +10,12 @@ int main(void)
 	char *buffer = malloc(1024);
 	size_t len = 1024;
 	char *token;
+	ssize_t bytesRead; 
 
 	while (1)
 	{
 		printf("$ ");
-		ssize_t bytesRead = getline(&buffer, &len, stdin);
+		bytesRead = getline(&buffer, &len, stdin);
 				
 		printf("buffer getline: %s", buffer);
 	
@@ -27,7 +28,7 @@ int main(void)
 		
 		if (bytesRead == -1)
         	{	
-            		printf("\n"); // End-of-file or error occurred
+            		printf("\n"); 
             		break;
         	}
 	}
