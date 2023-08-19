@@ -1,26 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
-{
-    char *buffer = malloc(1024);
+int main(void) {
+    char *buffer = (char *)malloc(1024);
     size_t len = 1024;
 
-    while (1)
-    {
-        printf("$ ");
-        ssize_t bytesRead = getline(&buffer, &len, stdin);
+    while (1) {
+        ssize_t bytesRead;
         
-        if (bytesRead == -1)
-        {
-            printf("\n"); // End-of-file or error occurred
+        printf("$ ");
+        bytesRead = getline(&buffer, &len, stdin);
+
+        if (bytesRead == -1) {
+            printf("\n");
             break;
         }
 
         printf("%s", buffer);
     }
 
-    free(buffer); // Free allocated memory
+    free(buffer);
     return 0;
 }
 
